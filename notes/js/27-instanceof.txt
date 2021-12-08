@@ -1,0 +1,13 @@
+typeof 对于对象可以检测到"Object", 但是对于小类， Date， RegExp， Array 等 并不可以检测到这种小的类型，之能检测为"Object"
+
+instanceof 可以检测出类的实例（对象）是否属于这个类，对于基本类型无法检测出来
+
+let ary = [1,3,4];
+console.log(ary instanceof Array); 返回 true
+
+console.log(1 instanceof Number); -> false   所以对于基本值类型并不能检测出来
+console.log((new Number(1)) instanceof Number);  -> true
+
+
+
+Object.prototype.toString.call 进行数据类型检测 靠谱

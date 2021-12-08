@@ -1,0 +1,74 @@
+联合类型 （对应的是交叉类型）
+interface Brid {
+  fly: boolean;
+  sing:() => {}
+}
+
+interface Dog {
+  fly: boolean;
+  bark:() => {}
+}
+
+function trainAnimal(animal: Brid | Dog) {
+  animal.fly()  // 只可以 提示出fly, 只能提示出 Brid 和 Dog 的公有属性或者方法
+}
+-----------------------------------------------
+类型保护
+1. 类型断言 as
+function trainAnimal(animal: Brid | Dog) {
+  (animal as Brid).sing();
+}
+**************************************
+2. in 语法做类型保护
+function trainAnimal2(animal: Brid | Dog) {
+  if("sing" in animal) {
+    animal.sing();
+  } else {
+    animal.bark();
+  }
+}
+***************************************
+3. typeof 语法做类型保护
+function add (first: string | number, second: string | number) {
+  if(typeof first === "string" || typeof second === "string") {
+    return `${first}${second}`
+  }
+  return first + second;
+}
+**************************************
+4. instanceOf 语法进行保护 (必须是class，instanceOf 不能用在interface 或者 type 上的)
+class NumberObj {
+  count: number
+}
+function add2(first: object | NumberObj, second: object | NumberObj) {
+  if(first instanceOf NumberObj && second instanceOf NumberObj) {
+    return first.count + second.count;
+  }
+  return 0;
+}
+-------------------------------------------
+泛型
+function join<T> (first: T, second: T) {
+  return `${first}${second}`
+}
+join<string>("a", "b");
+join<number>(1, 2);
+**********************
+function map<T> (param: T[]) {
+  return param;
+}
+map<string>(["a", "b"]);
+**********************
+function map<T> (param: Array<T>) {
+  return param;
+}
+map<string>(["a", "b"]);
+**********************
+function join<T, P> (first: T, second: P) {
+  return `${first}${second}`
+}
+join<string, number>("a", 1);
+**********************
+function join<T>(first: T, second: T): T {
+  return `${first}${second}`;  // 会报错，因为`` 后肯定是 string 了，T 有可以是任意类型，所以类型冲突 会报错了
+}
